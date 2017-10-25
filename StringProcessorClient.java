@@ -16,6 +16,7 @@ public class StringProcessorClient {
 	
 		int sampleSize = 100;
 		
+		//Sousa tangas
 		Random generator = new Random();
 		long totalTime = 0;
 		long duration;
@@ -24,7 +25,7 @@ public class StringProcessorClient {
 		for(int i= 0; i < sampleSize; i++) {
 			// invoke calculator
 			startTime = System.nanoTime();
-			s = stringProcessorProxy.toUpper("ABC"+i);
+			s = stringProcessorProxy.toUpper("ABCD"+i);
 			System.out.println(s);
 			duration = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
 			totalTime = totalTime + (duration);
