@@ -3,9 +3,15 @@ import java.net.*;
 
 public class Requestor 
 {
+	
+	private ClientRequestHandler crh;
+	public Requestor(String host, int port)
+	{
+		crh = new ClientRequestHandler(host, port);
+	}
+	
 	public Termination invoke(Invocation inv) throws UnknownHostException, IOException, Throwable
 	{
-		ClientRequestHandler crh = new ClientRequestHandler(inv.getHost(), inv.getPort());
 		Termination termination = new Termination();
 		byte[] msgMarshalled;
 		byte[] msgToBeUnmarshalled;

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 public class StringProcessorProxy extends ClientProxy implements IStringProcessor {
 
 	private static final long serialVersionUID = 1L;
+	private Requestor requestor;
 	
 	public StringProcessorProxy(String host, int port) {
 		super(host,port);
+		requestor = new Requestor(host, port);
 	}
 
 	public String revert(String s) throws Throwable {
@@ -15,7 +17,6 @@ public class StringProcessorProxy extends ClientProxy implements IStringProcesso
 		ArrayList<Object> parameters = new ArrayList<Object>();
 		class Local {};
 		String methodName = null;
-		Requestor requestor = new Requestor();
 		
 		// information received from Client
 		methodName = Local.class.getEnclosingMethod().getName();
@@ -41,7 +42,6 @@ public class StringProcessorProxy extends ClientProxy implements IStringProcesso
 		ArrayList<Object> parameters = new ArrayList<Object>();
 		class Local {};
 		String methodName = null;
-		Requestor requestor = new Requestor();
 		
 		// information received from Client
 		methodName = Local.class.getEnclosingMethod().getName();

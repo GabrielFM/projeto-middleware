@@ -19,7 +19,7 @@ public class NamingProxy extends ClientProxy implements INaming {
 		ArrayList<Object> parameters = new ArrayList<Object>();
 		class Local {};
 		String methodName = null;
-		Requestor requestor = new Requestor();
+		Requestor requestor = new Requestor(this.host, this.port);
 		
 		// information received from Client
 		methodName = Local.class.getEnclosingMethod().getName();
@@ -43,7 +43,7 @@ public class NamingProxy extends ClientProxy implements INaming {
 		ArrayList<Object> parameters = new ArrayList<Object>();
 		class Local {};
 		String methodName = null;
-		Requestor requestor = new Requestor();
+		Requestor requestor = new Requestor(this.host, this.port);
 		
 		// information received from Client
 		methodName = Local.class.getEnclosingMethod().getName();
@@ -69,7 +69,7 @@ public class NamingProxy extends ClientProxy implements INaming {
 		ArrayList<Object> parameters = new ArrayList<Object>();
 		class Local {};
 		String methodName = null;
-		Requestor requestor = new Requestor();
+		Requestor requestor = new Requestor(this.host, this.port);
 		
 		// information received from Client
 		methodName = Local.class.getEnclosingMethod().getName();

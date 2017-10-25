@@ -19,16 +19,23 @@ public class ClientRequestHandler
 	
 	public void send(byte [] msg) throws IOException, InterruptedException
 	{
-		Boolean success = false;
-		while(!success) {
-			try {
-				clientSocket = new Socket(host, port);
-				outToServer = new DataOutputStream(clientSocket.getOutputStream());
-				success = true;
-			} catch (IOException e) {
-				success = false;
-			}
-			
+//		Boolean success = false;
+//		while(!success) {
+//			try {
+//				clientSocket = new Socket(host, port);
+//				outToServer = new DataOutputStream(clientSocket.getOutputStream());
+//				success = true;
+//			} catch (IOException e) {
+//				success = false;
+//			}
+//			
+//		}
+		
+		if(clientSocket == null || !clientSocket.isConnected())
+		{
+			clientSocket = new Socket(host, port);
+			outToServer = new DataOutputStream(clientSocket.getOutputStream());
+			inFromServer = new DataInputStream(clientSocket.getInputStream());
 		}
 		
 		
@@ -38,8 +45,7 @@ public class ClientRequestHandler
 	}
 	
 	public byte [] receive() throws IOException, InterruptedException
-	{
-		inFromServer = new DataInputStream(clientSocket.getInputStream());
+	{		
 		
 		int size = inFromServer.readInt();
 		byte [] msg = new byte [size];
