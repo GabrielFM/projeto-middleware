@@ -12,4 +12,6 @@ public class Termination
 	{
 		this.result = result;
 	}
+	
+	// Test comment
 }
