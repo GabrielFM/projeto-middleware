@@ -16,6 +16,7 @@ public class StringProcessorClient {
 	
 		int sampleSize = 100;
 		
+		//Sousa tangas
 		Random generator = new Random();
 		long totalTime = 0;
 		long duration;
