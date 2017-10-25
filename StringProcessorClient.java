@@ -24,7 +24,7 @@ public class StringProcessorClient {
 		for(int i= 0; i < sampleSize; i++) {
 			// invoke calculator
 			startTime = System.nanoTime();
-			s = stringProcessorProxy.toUpper("ABC"+i);
+			s = stringProcessorProxy.toUpper("ABCD"+i);
 			System.out.println(s);
 			duration = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
 			totalTime = totalTime + (duration);
