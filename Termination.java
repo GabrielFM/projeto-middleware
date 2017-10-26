@@ -1,4 +1,3 @@
-
 public class Termination 
 {
 	private Object result;
@@ -12,6 +11,4 @@ public class Termination
 	{
 		this.result = result;
 	}
-	
-	// Test comment
 }
