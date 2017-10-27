@@ -9,13 +9,13 @@ public class ServerRequestHandler implements Cloneable
 	private DataOutputStream outToClient = null;
 	private DataInputStream inFromClient = null;
 	
-	public ServerRequestHandler(int port)
+	public ServerRequestHandler(int port) throws IOException
 	{
 		this.port = port;
+		welcomeSocket = new ServerSocket(this.port);
 	}
 	
 	private void init() throws IOException {		
-		welcomeSocket = new ServerSocket(this.port);
 		connectionSocket = welcomeSocket.accept();
 		inFromClient = new DataInputStream(connectionSocket.getInputStream());
 		outToClient = new DataOutputStream(connectionSocket.getOutputStream());
@@ -23,11 +23,18 @@ public class ServerRequestHandler implements Cloneable
 	
 	public byte [] receive() throws IOException, Throwable
 	{
-		if (connectionSocket == null || connectionSocket.isClosed()) {
+		/*if (connectionSocket == null || connectionSocket.isClosed()) {
 			init();
-		}
+		}*/
 		
-		int size = inFromClient.readInt();		
+		int size;
+		
+		try {
+			size = inFromClient.readInt();	
+		} catch(Exception e) {
+			init();
+			size = inFromClient.readInt();
+		}
 		
 		byte [] msg = new byte [size];
 		inFromClient.read(msg, 0, size);
@@ -46,7 +53,7 @@ public class ServerRequestHandler implements Cloneable
 		outToClient.close();
 		inFromClient.close();
 		connectionSocket.close();
-		welcomeSocket.close();
+		//welcomeSocket.close();
 		connectionSocket = null;
 	}
 }
