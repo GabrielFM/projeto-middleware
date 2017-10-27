@@ -1,9 +1,9 @@
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
 
-public class ClientRequestHandler 
+public class ClientRequestHandler implements Serializable, Cloneable
 {
+	private static final long serialVersionUID = 1L;
 	private String host;
 	private int port;
 	private Socket clientSocket = null;
@@ -14,30 +14,19 @@ public class ClientRequestHandler
 	{
 		this.host = host;
 		this.port = port;
-		
 	}
 	
-	public void send(byte [] msg) throws IOException, InterruptedException
-	{
-//		Boolean success = false;
-//		while(!success) {
-//			try {
-//				clientSocket = new Socket(host, port);
-//				outToServer = new DataOutputStream(clientSocket.getOutputStream());
-//				success = true;
-//			} catch (IOException e) {
-//				success = false;
-//			}
-//			
-//		}
-		
-		if(clientSocket == null || !clientSocket.isConnected())
-		{
-			clientSocket = new Socket(host, port);
-			outToServer = new DataOutputStream(clientSocket.getOutputStream());
-			inFromServer = new DataInputStream(clientSocket.getInputStream());
+	private void init() throws IOException {
+		this.clientSocket = new Socket(this.host, this.port);
+		this.outToServer = new DataOutputStream(clientSocket.getOutputStream());
+		this.inFromServer = new DataInputStream(clientSocket.getInputStream());
+	}
+	
+	public void send(byte [] msg) throws IOException
+	{	
+		if(clientSocket == null || !clientSocket.isConnected()) {
+			init();
 		}
-		
 		
 		outToServer.writeInt(msg.length);
 		outToServer.write(msg);
@@ -46,16 +35,16 @@ public class ClientRequestHandler
 	
 	public byte [] receive() throws IOException, InterruptedException
 	{		
-		
 		int size = inFromServer.readInt();
 		byte [] msg = new byte [size];
 		inFromServer.read(msg, 0, size);
 		
-		
-		outToServer.close();
-		inFromServer.close();
-		clientSocket.close();
 		return msg;
 	}
 	
+	public void close() throws IOException {
+		outToServer.close();
+		inFromServer.close();
+		clientSocket.close();
+	}
 }

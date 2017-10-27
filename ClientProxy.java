@@ -1,7 +1,6 @@
 import java.io.Serializable;
 import java.net.UnknownHostException;
 
-
 public class ClientProxy implements Serializable {
 	private static final long serialVersionUID = 1L;
 	protected String host;
@@ -11,10 +10,6 @@ public class ClientProxy implements Serializable {
 	public ClientProxy(String host, int port){
 		this.host = host;
 		this.port = port;
-	}
-	
-	public ClientProxy(final int p) throws UnknownHostException {
-		
 	}
 	
 	public String getHost() {

@@ -1,9 +1,7 @@
 import java.io.*;
+
 public class ReplyHeader implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String serviceContext;
 	private int requestId;
@@ -26,5 +24,4 @@ public class ReplyHeader implements Serializable
 	public int getReplyStatus() {
 		return replyStatus;
 	}
-	
 }

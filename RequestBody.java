@@ -1,10 +1,8 @@
 import java.io.*;
 import java.util.*;
+
 public class RequestBody implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Object> parameters = new ArrayList<Object>();
 	
@@ -17,5 +15,4 @@ public class RequestBody implements Serializable
 	{
 		return parameters;
 	}
-	
 }

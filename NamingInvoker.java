@@ -6,7 +6,7 @@ public class NamingInvoker
 	
 	public void invoke(int port) throws Throwable
 	{
-		ServerRequestHandler  srh = new ServerRequestHandler(port);
+		ServerRequestHandler srh = new ServerRequestHandler(port);
 		byte[] rcvBuffer, sndBuffer;
 		Message rcvMessage, sndMessage;
 		String serviceName;
@@ -21,61 +21,58 @@ public class NamingInvoker
 			
 			switch(rcvMessage.getBody().getRequestHeader().getOperation())
 			{
-			case "bind":
-				serviceName = params.get(0).toString();
-				clientProxy = (ClientProxy) params.get(1);
+				case "bind":
+					serviceName = params.get(0).toString();
+					clientProxy = (ClientProxy) params.get(1);
+					
+					namingImpl.bind(serviceName, clientProxy);
+					terminator.setResult(serviceName);
+					
+					sndMessage = new Message(
+							new MessageHeader("MIOP", 0, false, 0, 0), 
+							new MessageBody(null, null, new ReplyHeader("", 0, 0), new ReplyBody(
+									terminator.getResult()))
+						);
+					
+					sndBuffer = Marshaller.marshall(sndMessage);
+					srh.send(sndBuffer);
+					break;
 				
-				namingImpl.bind(serviceName, clientProxy);
-				terminator.setResult(serviceName);
-				
-				sndMessage = new Message(
-						new MessageHeader("MIOP", 0, false, 0, 0), 
-						new MessageBody(null, null, new ReplyHeader("", 0, 0), new ReplyBody(
-								terminator.getResult()))
-					);
-				
-				sndBuffer = Marshaller.marshall(sndMessage);
-				srh.send(sndBuffer);
-				break;
-			
-			case "lookup":
-				serviceName = params.get(0).toString();
-				clientProxy = namingImpl.lookup(serviceName);
-				
-				terminator.setResult(clientProxy);
-				
-				sndMessage = new Message(
-						new MessageHeader("MIOP", 0, false, 0, 0), 
-						new MessageBody(null, null, new ReplyHeader("", 0, 0), new ReplyBody(
-								terminator.getResult()))
-					);
-				
-				sndBuffer = Marshaller.marshall(sndMessage);
-				srh.send(sndBuffer);
-				break;
-				
-			case "list":
-				terminator.setResult(namingImpl.list());
-				
-				sndMessage = new Message(
-						new MessageHeader("MIOP", 0, false, 0, 0), 
-						new MessageBody(null, null, new ReplyHeader("", 0, 0), new ReplyBody(
-								terminator.getResult()))
-					);
-				
-				sndBuffer = Marshaller.marshall(sndMessage);
-				
-				srh.send(sndBuffer);
-				break;
-			
-			default:
-				break;
-				
+				case "lookup":
+					serviceName = params.get(0).toString();
+					clientProxy = namingImpl.lookup(serviceName);
+					
+					terminator.setResult(clientProxy);
+					
+					sndMessage = new Message(
+							new MessageHeader("MIOP", 0, false, 0, 0), 
+							new MessageBody(null, null, new ReplyHeader("", 0, 0), new ReplyBody(
+									terminator.getResult()))
+						);
+					
+					sndBuffer = Marshaller.marshall(sndMessage);
+					srh.send(sndBuffer);
+					break;
+					
+				case "list":
+					terminator.setResult(namingImpl.list());
+					
+					sndMessage = new Message(
+							new MessageHeader("MIOP", 0, false, 0, 0), 
+							new MessageBody(null, null, new ReplyHeader("", 0, 0), new ReplyBody(
+									terminator.getResult()))
+						);
+					
+					sndBuffer = Marshaller.marshall(sndMessage);
+					
+					srh.send(sndBuffer);
+					break;
+					
+				default:
+					break;
 			}
 			
+			srh.close();
 		}
-		
-		
 	}
-	
 }

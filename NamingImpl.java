@@ -22,7 +22,6 @@ public class NamingImpl implements INaming
 			throw new UnknownHostException();
 		}
 		return clientProxy;
-		
 	}
 	
 	public ArrayList<String> list() throws UnknownHostException, IOException, Throwable{
@@ -30,8 +29,4 @@ public class NamingImpl implements INaming
 		
 		return names;
 	}
-	
-
-	
-	
 }
