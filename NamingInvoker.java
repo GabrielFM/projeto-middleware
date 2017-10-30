@@ -1,7 +1,5 @@
 import java.util.*;
-// Felipe
-// Têtê Laporte
-// Angola
+
 public class NamingInvoker 
 {
 	private NamingImpl namingImpl = new NamingImpl();

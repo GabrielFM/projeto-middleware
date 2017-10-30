@@ -22,16 +22,16 @@ public class ServerRequestHandler implements Cloneable
 	}
 	
 	public byte [] receive() throws IOException, Throwable
-	{
-		/*if (connectionSocket == null || connectionSocket.isClosed()) {
-			init();
-		}*/
-		
+	{		
 		int size;
+		
+		if (connectionSocket == null) {
+			init();
+		}
 		
 		try {
 			size = inFromClient.readInt();	
-		} catch(Exception e) {
+		} catch(SocketException e) {
 			init();
 			size = inFromClient.readInt();
 		}
