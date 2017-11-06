@@ -2,7 +2,7 @@ import java.io.*;
 
 public class Marshaller 
 {
-	public static byte[] marshall(Message msgToMarshalled) throws IOException, InterruptedException
+	public static byte[] marshall(Message msgToMarshalled) throws IOException 
 	{
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
@@ -10,7 +10,7 @@ public class Marshaller
 		return byteStream.toByteArray();
 	}
 	
-	public static Message unmarshall(byte [] msgToBeUnmarshalled) throws IOException, InterruptedException, ClassNotFoundException
+	public static Message unmarshall(byte [] msgToBeUnmarshalled) throws IOException, ClassNotFoundException 
 	{
 		ByteArrayInputStream byteStream = new ByteArrayInputStream(msgToBeUnmarshalled);
 		ObjectInputStream objectStream = new ObjectInputStream(byteStream);

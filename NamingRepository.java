@@ -1,19 +1,19 @@
 import java.util.ArrayList;
 
 public class NamingRepository {
-	private ArrayList<NamingRecord> namingRecords = new ArrayList<NamingRecord>();
+	private static ArrayList<NamingRecord> namingRecords = new ArrayList<NamingRecord>();
 	
-	public void addRecord(String recordName, ClientProxy clientProxy)
+	public static void addRecord(String recordName, ClientProxy clientProxy)
 	{
 		NamingRecord namingRecord = new NamingRecord(recordName, clientProxy);
 		namingRecords.add(namingRecord);
 	}
 	
-	public void setNamingRecord(ArrayList<NamingRecord> namingRecord){
-		this.namingRecords = namingRecord;
+	public static void setNamingRecord(ArrayList<NamingRecord> newNamingRecords){
+		namingRecords = newNamingRecords;
 	}
 	
-	public ClientProxy getNamingRecord(String serviceName)
+	public static ClientProxy getNamingRecord(String serviceName)
 	{
 		ClientProxy clientProxy = null;
 		for(int i = 0; i < namingRecords.size(); i++)
@@ -27,7 +27,7 @@ public class NamingRepository {
 		return clientProxy;
 	}
 
-	public ArrayList<String> list(){
+	public static ArrayList<String> list(){
 		ArrayList<String> serviceNames = new ArrayList<String>();
 		
 		for(int i = 0; i < namingRecords.size(); ++i){

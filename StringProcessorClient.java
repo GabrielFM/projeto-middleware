@@ -23,7 +23,7 @@ public class StringProcessorClient {
 			// invoke calculator
 			startTime = System.nanoTime();
 			s = stringProcessorProxy.toUpper("ABCD" + i);
-			// System.out.println(s);
+//			System.out.println(s);
 			duration = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
 			totalTime = totalTime + duration;
 			Thread.sleep((long) (generator.nextGaussian()*0.1+10));
