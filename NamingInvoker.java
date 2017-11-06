@@ -40,7 +40,7 @@ public class NamingInvoker implements Runnable
 				
 				switch(rcvMessage.getBody().getRequestHeader().getOperation())
 				{
-					case "bind":
+					case "bind":						
 						serviceName = params.get(0).toString();
 						clientProxy = (ClientProxy) params.get(1);
 						

@@ -12,7 +12,7 @@ public class StringProcessorClient {
 		// look for StringProcessor in Naming Service 
 		StringProcessorProxy stringProcessorProxy = (StringProcessorProxy) namingService.lookup("StringProcessor");
 	
-		int sampleSize = 1000;
+		int sampleSize = 10000;
 		
 		Random generator = new Random();
 		long totalTime = 0;
