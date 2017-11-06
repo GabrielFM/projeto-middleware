@@ -1,9 +1,7 @@
 import java.io.IOException;
 
 public class StringProcessorInvoker implements Runnable{
-	
 	private ServerRequestHandler srh;
-	
 	
 	public StringProcessorInvoker() {}
 	
@@ -12,10 +10,11 @@ public class StringProcessorInvoker implements Runnable{
 	}
 	
 	public void invoke(ClientProxy clientProxy) throws IOException, Throwable{
+		ObjectPoolManager.init();
+		
 		while(true) {
 			(new Thread(new StringProcessorInvoker(new ServerRequestHandler(clientProxy.getPort())))).start(); 
 		}
-		
 	}
 
 	@Override
@@ -26,13 +25,10 @@ public class StringProcessorInvoker implements Runnable{
 		Message msgUnmarshalled = null;
 		Termination ter = new Termination();
 		
-		//create remote object
-		StringProcessorImpl rObj = new StringProcessorImpl();
-		
+		StringProcessorImpl rObj;
 		// inversion loop
 		try {
 			while (true) {
-				
 				// @ Receive Message
 				try {
 					msgToBeUnmarshalled = srh.receive();
@@ -47,7 +43,19 @@ public class StringProcessorInvoker implements Runnable{
 					case "toUpper":
 						// @ Invokes the remote object
 						String _toUpper_str_ = (String) msgUnmarshalled.getBody().getRequestBody().getParameters().get(0);
-						ter.setResult(rObj.toUpper(_toUpper_str_));
+						
+						synchronized (ObjectPoolManager.class) {
+							rObj = ObjectPoolManager.get();
+							if (rObj == null) {
+								ObjectPoolManager.class.wait();
+								rObj = ObjectPoolManager.get();
+							}
+							
+							ter.setResult(rObj.toUpper(_toUpper_str_));
+							
+							ObjectPoolManager.put(rObj);
+							ObjectPoolManager.class.notify();
+						}
 						
 						Message _toUpper_msgToBeMarshalled = new Message(new MessageHeader("protocolo", 0, false, 0, 0),
 								new MessageBody(null, 
@@ -64,7 +72,20 @@ public class StringProcessorInvoker implements Runnable{
 					case "revert":
 						// @ Invokes the remote object
 						String _str_ = (String) msgUnmarshalled.getBody().getRequestBody().getParameters().get(0);
-						ter.setResult(rObj.revert(_str_));
+						
+						
+						synchronized (ObjectPoolManager.class) {
+							rObj = ObjectPoolManager.get();
+							if (rObj == null) {
+								ObjectPoolManager.class.wait();
+								rObj = ObjectPoolManager.get();
+							}
+							
+							ter.setResult(rObj.revert(_str_));
+							
+							ObjectPoolManager.put(rObj);
+							ObjectPoolManager.class.notify();
+						}
 						
 						Message _revert_msgToBeMarshalled = new Message(new MessageHeader("protocolo", 0, false, 0, 0),
 								new MessageBody(null, 
