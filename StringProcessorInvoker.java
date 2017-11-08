@@ -28,6 +28,9 @@ public class StringProcessorInvoker implements Runnable{
 		StringProcessorImpl rObj;
 		// inversion loop
 		try {
+			//adicionar o cypter aqui
+			
+			
 			while (true) {
 				// @ Receive Message
 				try {
