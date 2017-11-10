@@ -15,7 +15,7 @@ public class Crypter {
 
 	private Cipher encripta;
 	private Cipher decripta;
-	public void init(ServerRequestHandler srh) throws Exception
+	public void init(ClientRequestHandler crh) throws Exception
 	{
 		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("DH");
 		keyPairGen.initialize(2048);
@@ -25,8 +25,8 @@ public class Crypter {
 	    keyAgree.init(kPair.getPrivate());
 		
 		byte [] encodedPublicKey = kPair.getPublic().getEncoded();
-		srh.send(encodedPublicKey);
-		byte [] receivedEncodedPublicKey = srh.receive();
+		crh.send(encodedPublicKey);
+		byte [] receivedEncodedPublicKey = crh.receive();
 		
 		KeyFactory keyFact = KeyFactory.getInstance("DH");
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(receivedEncodedPublicKey);
@@ -41,8 +41,8 @@ public class Crypter {
 		encripta.init(Cipher.ENCRYPT_MODE, key);
 		
 		byte[] sentEncodedParams = encripta.getParameters().getEncoded();
-		srh.send(sentEncodedParams);
-		byte[] receivedEncodedParams = srh.receive();
+		crh.send(sentEncodedParams);
+		byte[] receivedEncodedParams = crh.receive();
 		
 		AlgorithmParameters aesParams = AlgorithmParameters.getInstance("AES");
 	    aesParams.init(receivedEncodedParams);
@@ -51,9 +51,9 @@ public class Crypter {
 		
 	}
 	
-	void init (ClientRequestHandler crh) throws Exception
+	void init (ServerRequestHandler srh) throws Exception
 	{
-		byte[] receivedEncodedPublicKey = crh.receive();
+		byte[] receivedEncodedPublicKey = srh.receive();
 		KeyFactory keyFact = KeyFactory.getInstance("DH");
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(receivedEncodedPublicKey);
 		PublicKey receivedPublicKey = keyFact.generatePublic(x509KeySpec);
@@ -67,7 +67,7 @@ public class Crypter {
 	    keyAgree.init(kPair.getPrivate());
 	    
 	    byte [] encodedPublicKey = kPair.getPublic().getEncoded();
-		crh.send(encodedPublicKey);
+		srh.send(encodedPublicKey);
 		
 		keyAgree.doPhase(receivedPublicKey, true);
 		
@@ -79,8 +79,8 @@ public class Crypter {
 		encripta.init(Cipher.ENCRYPT_MODE, key);
 		
 		byte[] sentEncodedParams = encripta.getParameters().getEncoded();
-		crh.send(sentEncodedParams);
-		byte[] receivedEncodedParams = crh.receive();
+		srh.send(sentEncodedParams);
+		byte[] receivedEncodedParams = srh.receive();
 		
 		AlgorithmParameters aesParams = AlgorithmParameters.getInstance("AES");
 	    aesParams.init(receivedEncodedParams);

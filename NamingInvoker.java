@@ -25,8 +25,12 @@ public class NamingInvoker implements Runnable
 		String serviceName;
 		ClientProxy clientProxy;
 		Termination terminator = new Termination();
+		byte[] msgEncripted = null;
+		byte[] msgDecripted = null;
+		Crypter crypter = new Crypter();
 		
 		try {
+			crypter.init(srh);
 			while(true)
 			{
 				try {
@@ -34,7 +38,8 @@ public class NamingInvoker implements Runnable
 				} catch (IOException e) {
 					break;
 				}
-				rcvMessage = Marshaller.unmarshall(rcvBuffer);
+				msgDecripted = crypter.decrypt(rcvBuffer);
+				rcvMessage = Marshaller.unmarshall(msgDecripted);
 				ArrayList<Object> params = rcvMessage.getBody().getRequestBody().getParameters();
 				
 				switch(rcvMessage.getBody().getRequestHeader().getOperation())
@@ -53,7 +58,8 @@ public class NamingInvoker implements Runnable
 							);
 						
 						sndBuffer = Marshaller.marshall(sndMessage);
-						srh.send(sndBuffer);
+						msgEncripted = crypter.encrypt(sndBuffer);
+						srh.send(msgEncripted);
 						break;
 					
 					case "lookup":
@@ -69,7 +75,8 @@ public class NamingInvoker implements Runnable
 							);
 						
 						sndBuffer = Marshaller.marshall(sndMessage);
-						srh.send(sndBuffer);
+						msgEncripted = crypter.encrypt(sndBuffer);
+						srh.send(msgEncripted);
 						break;
 						
 					case "list":

@@ -20,26 +20,30 @@ public class StringProcessorInvoker implements Runnable{
 	@Override
 	public void run() {
 
-		byte[] msgToBeUnmarshalled = null;
+		byte[] msgToBeDecripted = null;
 		byte[] msgMarshalled = null;
+		byte[] msgToBeUnmarshalled = null;
+		byte[] msgEncripted = null;
 		Message msgUnmarshalled = null;
 		Termination ter = new Termination();
 		
 		StringProcessorImpl rObj;
 		// inversion loop
 		try {
-			//adicionar o cypter aqui
+			Crypter crypter = new Crypter();
+			crypter.init(srh);
 			
 			
 			while (true) {
 				// @ Receive Message
 				try {
-					msgToBeUnmarshalled = srh.receive();
+					msgToBeDecripted = srh.receive();
 				}catch (IOException e) {
 					break;
 				}
 				
 				//@ Unmarshall received message
+				msgToBeUnmarshalled = crypter.decrypt(msgToBeDecripted);
 				msgUnmarshalled = Marshaller.unmarshall(msgToBeUnmarshalled);
 				
 				switch (msgUnmarshalled.getBody().getRequestHeader().getOperation()) {
@@ -66,10 +70,11 @@ public class StringProcessorInvoker implements Runnable{
 												ter.getResult())));
 						
 						// @ Marshall the response
-						msgMarshalled = Marshaller.marshall(_toUpper_msgToBeMarshalled);
 						
+						msgMarshalled = Marshaller.marshall(_toUpper_msgToBeMarshalled);
+						msgEncripted = crypter.encrypt(msgMarshalled);
 						// @ Send response
-						srh.send(msgMarshalled);
+						srh.send(msgEncripted);
 						break;
 					
 					case "revert":
@@ -97,9 +102,9 @@ public class StringProcessorInvoker implements Runnable{
 						
 						// @ Marshall the response
 						msgMarshalled = Marshaller.marshall(_revert_msgToBeMarshalled);
-						
+						msgEncripted = crypter.encrypt(msgMarshalled);
 						// @ Send response
-						srh.send(msgMarshalled);
+						srh.send(msgEncripted);
 						break;
 						
 					default:

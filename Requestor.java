@@ -5,10 +5,19 @@ public class Requestor implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private ClientRequestHandler crh;
+	private Crypter crypter;
 	
 	public Requestor(String host, int port)
 	{
 		crh = new ClientRequestHandler(host, port);
+		crypter = new Crypter();
+		try {
+			crypter.init(crh);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public Termination invoke(Invocation inv) throws UnknownHostException, IOException, Throwable
@@ -20,9 +29,11 @@ public class Requestor implements Serializable
 		Message msgToBeMarshalled = new Message(messageHeader,messageBody);
 		
 		byte[] msgMarshalled = Marshaller.marshall(msgToBeMarshalled);
-		crh.send(msgMarshalled);
+		byte[] msgEncripted = crypter.encrypt(msgMarshalled);
+		crh.send(msgEncripted);
 		
-		byte[] msgToBeUnmarshalled = crh.receive();
+		byte[] msgToBeDecripted = crh.receive();
+		byte[] msgToBeUnmarshalled = crypter.decrypt(msgToBeDecripted);
 		
 		Message msgUnmarshalled = Marshaller.unmarshall(msgToBeUnmarshalled);
 		
