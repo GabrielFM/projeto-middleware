@@ -7,5 +7,5 @@ public interface INaming {
 	
 	public ClientProxy lookup(String serviceName) throws UnknownHostException, IOException, Throwable;
 	
-	public ArrayList<String> list() throws UnknownHostException, IOException, Throwable;
+	/*public ArrayList<String> list() throws UnknownHostException, IOException, Throwable;*/
 }

@@ -5,23 +5,24 @@ public class Requestor implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private ClientRequestHandler crh;
-	private Crypter crypter;
+	private Crypter crypter = null;
 	
 	public Requestor(String host, int port)
 	{
 		crh = new ClientRequestHandler(host, port);
-		crypter = new Crypter();
-		try {
-			crypter.init(crh);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public Termination invoke(Invocation inv) throws UnknownHostException, IOException, Throwable
 	{
+		if (crypter == null) {
+			crypter = new Crypter();
+			try {
+				crypter.init(crh);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		RequestHeader requestHeader = new RequestHeader("", 0, true, 0, inv.getMethodName());
 		RequestBody requestBody = new RequestBody(inv.getParameters());
 		MessageHeader messageHeader = new MessageHeader("MIOP", 0, false, 0, 0);

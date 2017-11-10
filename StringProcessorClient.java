@@ -12,7 +12,7 @@ public class StringProcessorClient {
 		// look for StringProcessor in Naming Service 
 		StringProcessorProxy stringProcessorProxy = (StringProcessorProxy) namingService.lookup("StringProcessor");
 	
-		int sampleSize = 10000;
+		int sampleSize = 1000;
 		
 		Random generator = new Random();
 		long totalTime = 0;
@@ -22,7 +22,8 @@ public class StringProcessorClient {
 		for (int i= 0; i < sampleSize; i++) {
 			// invoke calculator
 			startTime = System.nanoTime();
-			s = stringProcessorProxy.toUpper("ABCD" + i);
+			s = stringProcessorProxy.toUpper("abcd " + i);
+			s = stringProcessorProxy.revert(s);
 //			System.out.println(s);
 			duration = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
 			totalTime = totalTime + duration;

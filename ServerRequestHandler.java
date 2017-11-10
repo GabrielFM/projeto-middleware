@@ -19,11 +19,7 @@ public class ServerRequestHandler implements Cloneable
 	}
 	
 	public byte [] receive() throws IOException
-	{
-		/*if (connectionSocket == null || connectionSocket.isClosed()) {
-			init();
-		}*/
-		
+	{		
 		int size = inFromClient.readInt();
 		
 		byte [] msg = new byte [size];
@@ -38,5 +34,4 @@ public class ServerRequestHandler implements Cloneable
 		outToClient.write(msg);
 		outToClient.flush();
 	}
-	
 }

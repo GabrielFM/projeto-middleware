@@ -114,6 +114,5 @@ public class StringProcessorInvoker implements Runnable{
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-		
 	}
 }

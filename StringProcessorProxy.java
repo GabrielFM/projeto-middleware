@@ -1,6 +1,4 @@
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class StringProcessorProxy extends ClientProxy implements IStringProcessor, Serializable {
@@ -58,5 +56,4 @@ public class StringProcessorProxy extends ClientProxy implements IStringProcesso
 		//@ Result sent back to Client
 		return (String) ter.getResult();
 	}
-
 }

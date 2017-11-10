@@ -1,9 +1,7 @@
 import java.io.*;
+
 public class MessageHeader implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String magic;
 	private int version;
@@ -38,5 +36,4 @@ public class MessageHeader implements Serializable
 	public long getMessageSize() {
 		return messageSize;
 	}
-	
 }

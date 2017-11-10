@@ -1,4 +1,3 @@
-
 public interface IStringProcessor {
 	public String revert(String s) throws Throwable;
 

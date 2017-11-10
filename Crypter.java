@@ -8,7 +8,6 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.*;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Crypter {
@@ -25,6 +24,7 @@ public class Crypter {
 	    keyAgree.init(kPair.getPrivate());
 		
 		byte [] encodedPublicKey = kPair.getPublic().getEncoded();
+		
 		crh.send(encodedPublicKey);
 		byte [] receivedEncodedPublicKey = crh.receive();
 		
@@ -35,9 +35,9 @@ public class Crypter {
 		
 		byte[] chave = keyAgree.generateSecret();
 
-		SecretKeySpec key = new SecretKeySpec(chave,"AES");
+		SecretKeySpec key = new SecretKeySpec(chave,0, 16, "AES");
 		
-		Cipher encripta = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		encripta = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		encripta.init(Cipher.ENCRYPT_MODE, key);
 		
 		byte[] sentEncodedParams = encripta.getParameters().getEncoded();
@@ -46,9 +46,8 @@ public class Crypter {
 		
 		AlgorithmParameters aesParams = AlgorithmParameters.getInstance("AES");
 	    aesParams.init(receivedEncodedParams);
-		Cipher decripta = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		decripta = Cipher.getInstance("AES/CBC/PKCS5Padding");
         decripta.init(Cipher.DECRYPT_MODE, key, aesParams);
-		
 	}
 	
 	void init (ServerRequestHandler srh) throws Exception
@@ -73,9 +72,9 @@ public class Crypter {
 		
 		byte[] chave = keyAgree.generateSecret();
 
-		SecretKeySpec key = new SecretKeySpec(chave,"AES");
+		SecretKeySpec key = new SecretKeySpec(chave, 0, 16, "AES");
 		
-		Cipher encripta = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		encripta = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		encripta.init(Cipher.ENCRYPT_MODE, key);
 		
 		byte[] sentEncodedParams = encripta.getParameters().getEncoded();
@@ -84,11 +83,8 @@ public class Crypter {
 		
 		AlgorithmParameters aesParams = AlgorithmParameters.getInstance("AES");
 	    aesParams.init(receivedEncodedParams);
-		Cipher decripta = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		decripta = Cipher.getInstance("AES/CBC/PKCS5Padding");
         decripta.init(Cipher.DECRYPT_MODE, key, aesParams);
-		
-		
-		
 	}
 	
 	public byte[] encrypt(byte[] bs) throws Exception

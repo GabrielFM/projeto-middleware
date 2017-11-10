@@ -1,9 +1,7 @@
 import java.io.*;
+
 public class MessageBody implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private RequestHeader requestHeader;
 	private RequestBody requestBody;
@@ -37,5 +35,4 @@ public class MessageBody implements Serializable
 	{
 		return this.replyBody;
 	}
-	
 }

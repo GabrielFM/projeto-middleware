@@ -57,7 +57,7 @@ public class NamingProxy extends ClientProxy implements INaming {
 		//@ Result sent back to Client
 		return (ClientProxy) ter.getResult();
 	}
-	
+	/*
 	public ArrayList<String> list() throws UnknownHostException, IOException, Throwable {
 		class Local {};
 		
@@ -80,5 +80,5 @@ public class NamingProxy extends ClientProxy implements INaming {
 		
 		//@ Result sent back to Client
 		return (ArrayList<String>) ter.getResult();
-	}
+	}*/
 }
